@@ -1,0 +1,134 @@
+body {
+    background: linear-gradient(25deg, #D2F0FF, #D8EAF2);
+    align-items: center;
+}
+li {
+    color: #899596;
+    list-style-type: square;
+    margin: 5px;
+    background-color: #C1D3DB;
+    padding: 5px;
+}
+a.li2:link {
+    color: #899596;
+    list-style-type: square;
+    margin: 5px;
+    background-color: #C1D3DB;
+    padding: 5px;
+}
+a.li2:visited {
+    color: black;
+    font-family: Damascus;
+
+}
+a{
+    padding: 5px;
+}
+#name {
+    color: whitesmoke;
+    font-family: "Corsiva Hebrew";
+
+}
+hr {
+    flex-direction: column;
+}
+footer {
+    background-color: #7A9CAB;
+    text-align: center;
+    padding: 5px;
+    color: #FFFFFF;
+    font-family: Damascus;
+    align-items: center;
+    flex-direction: row;
+    flex: 1;
+}
+links {
+    align: center;
+    flex-direction: column;
+    background-color: #3A535E;
+    text-align: center;
+    padding: 10px;
+}
+header {
+    background-color: #3A535E;
+    text-align: center;
+    padding: 5px;
+    color: #FFFFFF;
+    font-family: Damascus;
+    box-shadow: 3px 10px #7A9CAB ;
+}
+
+a:link {
+    color: #FFFFFF;
+}
+a:visited {
+    color: aliceblue;
+    font-family: Damascus;
+
+
+}
+hr {
+    height: 10px;
+}
+.mb {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-top: 10px;
+
+}
+.submb {
+    flex-direction: column;
+    position: relative;
+    justify-content: flex-start;
+}
+.propic {
+    width: 600px;
+    padding: 20px;
+    margin-top: 100px;
+    transform: rotate(90deg);
+}
+h2 {
+    color: #11243B;
+    font-family: "Arial Hebrew";
+}
+p {
+    color: #11243B;
+    font-family: "Arial Hebrew";
+}
+ul {
+    list-style-type: square;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #899596;
+}
+.navbar li {
+    float: left;
+    border-radius: 2px;
+}
+
+.navbar a {
+    display: block;
+    border-radius: 2px;
+    color: #3A535E;
+    text-align: center;
+    padding: 7px 20px;
+    text-decoration: aliceblue;
+}
+
+/* Change the link color to #111 (black) on hover */
+.navbar a:hover {
+    background-color: #3A535E;
+    color: #FFFFFF;
+}
+.navbar {
+    position: center;
+    list-style-type: none;
+    margin: 0;
+    flex: 1;
+    background-color: #7A9CAB;
+
+}
