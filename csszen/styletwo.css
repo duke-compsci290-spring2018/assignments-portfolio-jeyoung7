@@ -1,0 +1,112 @@
+body {
+    background: #606c88; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #606c88, #3f4c6b); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #606c88, #3f4c6b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #FFFFFF;
+}
+.intro {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+#zen-intro {
+    font-family: Helvetica;
+}
+*[role="banner"] {
+    width: 40%;
+    padding-right: 10%;
+    margin-left: 5px;
+    font-size: larger;
+
+    flex: 2;
+}
+#zen-summary, #zen-summary p {
+    position: absolute;
+    font-size: xx-small;
+    color: ghostwhite;
+    margin-top: 4%;
+    width: 100%;
+}
+#zen-preamble {
+    position: relative;
+    font-size: smaller;
+    flex: 1.25;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    text-align: center;
+    border-radius: 2%;
+    color: #3f4c6b;
+}
+
+#zen-supporting {
+    width: 100%;
+    color: #3f4c6b;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 0px;
+    margin-right: 10%;
+}
+*[role="main"] {
+    margin-left: 45%;
+}
+#zen-benefits,#zen-supporting,#zen-explanation, #zen-requirements, #zen-participation {
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+
+    margin: 1em 3em;
+    color: #999;
+    border-left: 2px solid #999;
+    padding-left: 1em;
+    margin: 10px;
+}
+*[role="article"] {
+    margin-left: 10px;
+}
+p {
+    color: #3f4c6b;
+    margin-right: 10%;
+
+}
+.wrapper {
+     position: relative;
+     display: flex;
+     flex-direction: row;
+     justify-content: flex-start;
+ }
+
+.sidebar {
+    padding: 10px;
+    margin: 1px;
+    top: 35%;
+    width: 100%;
+    align-items: center;
+
+}
+
+.sidebar li a:link {
+    color: white;
+}
+.sidebar li a:visited {
+    color: ghostwhite;
+}
+
+#design-selection {
+    margin-left: 10%;
+
+    align-items: center;
+}
+*[role="article"] :hover {
+    background: #40e0d0; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #40e0d0, #ff8c00, #ff0080); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #40e0d0, #ff8c00, #ff0080);
+    padding: .5px;
+}
+
+.extra1 {
+    position: relative;
+    right: 0px;
+    bottom: 0px;
+    width: 250px;
+    height: 200px;
+    align-self: right;
+    background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoZwXXfUpXV13AUzdsaPD7xxE4HM7ka5uvSIwGKjEkJFEr6-TZ)
+}

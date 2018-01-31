@@ -1,0 +1,233 @@
+/* css Zen Garden default style v1.02 */
+/* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
+
+/* This file based on 'Tranquille' by Dave Shea */
+/* You may use this file as a foundation for any new work, but you may find it easier to start from scratch. */
+/* Not all elements are defined in this file, so you'll most likely want to refer to the xhtml as well. */
+
+/* Your images should be linked as if the CSS file sits in the same folder as the images. ie. no paths. */
+
+
+
+/* basic elements */
+html {
+	margin: 0;
+	padding: 0;
+	}
+body {
+	font: 75% Beirut, Baghdad;
+	line-height: 1.88889;
+	color: whitesmoke;
+	background: linear-gradient(#434343, #000000) no-repeat bottom right;
+	margin: 0;
+	padding: 0;
+	}
+p { 
+	margin-top: 0; 
+	text-align: left;
+	}
+h3 { 
+	font: italic normal 1.4em "Apple Braille";
+	letter-spacing: 1px; 
+	margin-bottom: 3px;
+    border-radius: 2px;
+    padding: 5px;
+    text-align: center;
+    -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+    background: #40e0d0; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #40e0d0, #ff8c00, #ff0080); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #40e0d0, #ff8c00, #ff0080); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+a:link { 
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #778899;
+	}
+a:visited { 
+	font-weight: bold; 
+	text-decoration: none; 
+	color: #D4CDDC;
+	}
+a:hover, a:focus, a:active { 
+	text-decoration: underline; 
+	color: #9685BA;
+	}
+abbr {
+	border-bottom: none;
+	}
+
+
+/* specific divs */
+.page-wrapper {
+	background: url(https://media3.giphy.com/media/BSx6mzbW1ew7K/giphy.gif) no-repeat bottom;
+	padding: 0 10px 0 5px;
+	margin: 0;
+	position: relative;
+	}
+
+.intro { 
+	min-width: 470px;
+	width: 100%;
+	}
+
+header h1 { 
+	margin-top: 10px;
+	display: block;
+
+	float: left;
+
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+header h2 { 
+	margin-top: 58px;
+	margin-bottom: 40px; 
+	width: 200px; 
+	height: 18px; 
+	float: right;
+
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+header {
+	padding-top: 20px;
+	height: 87px;
+    background: transparent url(https://media.giphy.com/media/DjNv9F1B2Wmdi/giphy.gif) repeat top left;
+
+}
+
+.summary {
+	clear: both; 
+	margin: 20px 20px 20px 10px; 
+	width: 160px; 
+	float: left;
+	}
+.summary p {
+	font: italic 1.1em/2.2 georgia; 
+	text-align: center;
+	}
+
+.preamble {
+	clear: right; 
+	padding: 0px 10px 0 10px;
+	}
+.supporting {	
+	padding-left: 10px; 
+	margin-bottom: 40px;
+	}
+
+footer { 
+	text-align: center; 
+	}
+footer a:link, footer a:visited { 
+	margin-right: 20px; 
+	}
+
+.sidebar {
+    margin-top: 300px;
+	position: absolute;
+    flex-direction: row;
+    display: flex;
+	top: 0;
+	left: 5px;
+	}
+.sidebar .design-name {
+    color: #B3AE94;
+}
+.sidebar .wrapper { 
+	font: 10px verdana, sans-serif; 
+	background: linear-gradient(#434343, #000000) no-repeat bottom right;
+	padding: 10px;
+	margin-top: 150px; 
+	width: 130px; 
+	}
+.sidebar h3.select { 
+	background: transparent url(http://csszengarden.com/001/h3.gif) no-repeat top left; 
+	margin: 10px 0 5px 0; 
+	width: 97px; 
+	height: 16px; 
+
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+.sidebar h3.archives { 
+	background: transparent url(http://csszengarden.com/001/h5.gif) no-repeat top left; 
+	margin: 25px 0 5px 0; 
+	width:57px; 
+	height: 14px; 
+
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+.sidebar h3.resources { 
+	background: transparent url(http://csszengarden.com/001/h6.gif) no-repeat top left; 
+	margin: 25px 0 5px 0; 
+	width:63px; 
+	height: 10px; 
+
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+#zen-supporting {
+    display: flex;
+
+
+}
+#zen-explanation {
+    background: url(https://i.imgur.com/aRMV3S1.gif);
+}
+#zen-participation {
+    background: url(https://i.imgur.com/hHfgZZd.gif);
+}
+#zen-requirements {
+    background: url(https://i.imgur.com/9phU1la.gif);
+}
+#zen-summary:hover {
+    background: #40e0d0; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #40e0d0, #ff8c00, #ff0080); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #40e0d0, #ff8c00, #ff0080);
+}
+*[role="article"] {
+    padding: 5px;
+}
+#zen-preamble {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+#zen-benefits {
+    background: url(https://i.imgur.com/sTFTUTG.gif);
+}
+.sidebar ul {
+	margin: 0;
+	padding: 0;
+	}
+.sidebar li {
+	line-height: 1.3em; 
+	background: transparent url(http://csszengarden.com/001/cr1.gif) no-repeat top center; 
+	display: block; 
+	padding-top: 5px; 
+	margin-bottom: 5px;
+	list-style-type: none;
+	}
+.sidebar li a:link {
+	color: #988F5E;
+	}
+.sidebar li a:visited {
+	color: #B3AE94;
+	}
+
+
+.extra1 {
+	position: absolute;
+	top: 40px; 
+	right: 0; 
+	width: 148px; 
+	height: 110px;
+	}
