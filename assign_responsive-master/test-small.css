@@ -1,0 +1,7 @@
+/** CSS File for md Screens **/
+@media screen and (max-width: 700px) {
+    p {
+        font-size: 18px;
+
+    }
+}

@@ -1,0 +1,19 @@
+/** CSS File for Lg Screens **/
+@media screen and (max-width: 2000px) {
+    row-t {
+        width: 100%;
+        padding: 25px;
+        margin: 10px;
+
+        background-color: lightslategrey;
+
+    }
+
+    img {
+        width: 100%;
+    }
+
+    p {
+        font-size: 20px;
+    }
+}

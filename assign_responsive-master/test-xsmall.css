@@ -1,0 +1,14 @@
+/** CSS File for xs Screens **/
+@media screen and (max-width: 500px) {
+    p {
+        font-size: 14px;
+
+    }
+
+
+    /** Changing the width of the conatiner NOT photo ;) **/
+    #logo-container {
+        width: 50%;
+        align-content: center;
+    }
+}

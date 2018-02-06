@@ -1,0 +1,27 @@
+.navbar-custom {
+    background-color: #424C55;
+    /*width: 100%;*/
+    text-align: inherit;
+    flex: 1;
+    height: 10%;
+}
+
+nav a {
+    font-size: 18px;
+    padding: 10px;
+}
+
+.navbar-brand {
+    height: 5%;
+}
+
+.nav-link, .dropdown-item {
+    color: #FCFCFC;
+    padding: 0px 2% 0px 2%;
+    margin-bottom: 1%;
+}
+
+
+img {
+    width: 100%;
+}

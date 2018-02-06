@@ -4,12 +4,13 @@ body {
 .my-flex {
     border: 2px solid lightslategrey;
     height: 10%;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 
 }
 .col-xs-12{
-    width: 100%;
-}
+     width: 100%;
+ }
+
 .textpart {
 
     flex: 1;
@@ -23,11 +24,12 @@ body {
     font-size: larger;
 }
 article {
-    height: 20%;
     margin-bottom: 5%;
     border-radius: 30px;
     background-color: #fdfcfc;
     padding: 5px;
+    width: 20%;
+    height: auto;
 }
 
 #headerside {
@@ -39,14 +41,4 @@ main {
 
 }
 
-
-@media (max-width: @screen-xs) {
-    #headertext{font-size: 10px;}
-}
-
-@media (max-width: @screen-sm) {
-    #headertext{font-size: 14px;}
-}
-@media (max-width: @screen-md) {
-    #headertext{font-size: 140px;}
 }
