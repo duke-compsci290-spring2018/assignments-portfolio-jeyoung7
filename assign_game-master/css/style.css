@@ -1,0 +1,26 @@
+body {
+    background-color: wheat;
+}
+
+h1 {
+    text-align: center;
+}
+
+canvas {
+    background-color: #effdef;
+    margin: 0 auto;
+    display: block;
+    margin: 5px;
+}
+div {
+    display: flex;
+    flex-direction: row;
+}
+#instructions {
+    flex-direction: column;
+    width: 25%;
+    margin: 5px;
+}
+a {
+    padding: 5px;
+}
