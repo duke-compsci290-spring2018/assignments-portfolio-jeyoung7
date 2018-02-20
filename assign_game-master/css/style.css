@@ -8,9 +8,7 @@ h1 {
 
 canvas {
     background-color: #effdef;
-    margin: 0 auto;
     display: block;
-    margin: 5px;
 }
 div {
     display: flex;

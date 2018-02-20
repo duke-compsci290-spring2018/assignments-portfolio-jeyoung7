@@ -41,22 +41,27 @@ $(function() {
 
     // displays current question
     function displayPhoto() {
-        createPhoto(currentPhoto()).appendTo(slideshow);
+        createPhoto(currentPhoto()).appendTo(slideshow).hide().fadeIn(1000);;
         var header = $('<h2> ' + currentPhoto().title + '</h2>');
         console.log(currentPhoto().title);
         slideshow.append(header);
+        var category = $('<h3> ' + "Category: "+currentPhoto().tags + '</h3>');
+        slideshow.append(category);
+
+
     }
     function displayThumbnails() {
         for (var i = 0; i < photos.length; i++) {
             photos[i].pos = i;
 
-            createThumbnail(photos[i]).appendTo(gallery);
+            createThumbnail(photos[i],i).appendTo(gallery);
             if (!contains(titles,photos[i].tags)) {
                 createCheckBox(photos[i].tags);
                 titles.push(photos[i].tags);
             }
         }
     }
+    //found on stackovewrflow
     function contains(a, obj) {
         for (var i = 0; i < a.length; i++) {
             if (a[i] === obj) {
@@ -66,13 +71,17 @@ $(function() {
         return false;
     }
 
-    function createThumbnail(photoData) {
+    function createThumbnail(photoData,index) {
         if (photoData!==null) {
             return $('<div>').append($('<img>').attr('src', 'images/' + photoData.thumbnail))
-                .attr('class', 'image');
+                .attr('class', 'image').click(function(){ enlarge(index);});
         }
     }
-
+    function enlarge(index) {
+        counter = index;
+        slideshow.empty();
+        displayPhoto();
+    }
 
     // check if user's response is correct or not
     function checkResponse() {
@@ -91,6 +100,7 @@ $(function() {
     function nextPhoto() {
         counter += 1;
         slideshow.empty();
+
         if (counter === photos.length) {
             /*
             slideshow.html('<h2>You completed the gallery!<h2>');
@@ -110,6 +120,7 @@ $(function() {
     function lastPhoto() {
         counter -= 1;
         slideshow.empty();
+
         if (counter === -1) {
             /*
             slideshow.html('<h2>You completed the gallery!<h2>');
@@ -130,6 +141,7 @@ $(function() {
         $('#next').show();
         $('#start').hide();
         gallery.empty();
+
         counter = pos;
         displayPhoto();
     }
@@ -139,6 +151,7 @@ $(function() {
         $('#next').hide();
         $('#start').hide();
         gallery.empty();
+
         counter = 0;
         loadPhotos(url);
     }
@@ -214,7 +227,6 @@ $(function() {
                 temp.push(val);
 
         checkedboxes=temp;
-
         reload('./data/photos.json');
     }
     function hideExtra() {
@@ -265,8 +277,44 @@ $(function() {
         displayPhoto();
     }
 
+    function showAll() {
+        var newPhotos = [];
+        var categories  =[];
+        for (var i =0; i<photos.length; i++)
+        {
+            if (!contains(categories,photos[i].tags))
+            {
+                newPhotos.push(photos[i]);
+                categories.push(photos[i].tags);
+
+            }
+        }
+        photos = newPhotos;
+        slideshow.empty();
+        counter=0;
+        gallery.hide();
+        $('#notall').show();
+        $('#allcategories').hide();
+
+        displayPhoto();
+    }
+    function notAll() {
+        slideshow.empty();
+        gallery.show();
+        $('#notall').hide();
+        $('#allcategories').show();
+
+
+        loadPhotos('./data/photos.json');
+
+    }
+    $('#notall').hide();
+
     // add interactivity to HTML elements once
     $('#back').on('click', lastPhoto);
+    $('#allcategories').on('click', showAll);
+    $('#notall').on('click', notAll);
+
     $('#next').on('click', nextPhoto);
     $('#backToGallery').on('click', function () {
         slideshow.empty();
