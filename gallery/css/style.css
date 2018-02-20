@@ -1,0 +1,27 @@
+body {
+    background-color: wheat;
+
+}
+
+h1 {
+    text-align: center;
+}
+#title {
+    margin-bottom: 10px;
+}
+canvas {
+    background-color: #effdef;
+    margin: 0 auto;
+    display: block;
+    margin: 5px;
+}
+#gallery {
+    display: flex;
+    flex-direction: row;
+}
+#container {
+    text-align: center;
+}
+a {
+    padding: 5px;
+}
