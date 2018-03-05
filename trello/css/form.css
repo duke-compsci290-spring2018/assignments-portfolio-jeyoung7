@@ -2,6 +2,10 @@
     text-align: center;
     margin-top: 10%;
 }
+.sideways {
+    flex-direction: row;
+    display: flex;
+}
 .form  .field {
     padding: 10px;
 }

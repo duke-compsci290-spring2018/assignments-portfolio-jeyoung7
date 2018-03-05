@@ -10,8 +10,9 @@ var store = {
         inProgress: [],
         complete: [],
         users: [],
-        addNew:false
+        addNew:false,
     }
+
 }
 // visibility filters
 var filters = {
@@ -31,27 +32,7 @@ Vue.filter('pluralize', function (n) {
     return n === 1 ? 'item' : 'items';
 });
 
-// Example data that represents the list of todo items
-var todoList = [
-    {
-        title: 'Download code',
-        completed: true,
-        collapsed: false
 
-    },
-    {
-        title: 'Study code',
-        completed: true,
-        collapsed: true
-
-    },
-    {
-        title: 'Finish code',
-        completed: true,
-        collapsed: true
-
-    }
-];
 
 // app Vue instance
 var todoApp = new Vue({
@@ -61,6 +42,7 @@ var todoApp = new Vue({
         newTodo: '',
         visibility: 'all',
         addNew: false,
+        showModal: false,
         task: {
             name: '',
             about: '',
@@ -119,7 +101,8 @@ var inProgressApp = new Vue({
     data: {
         todos: store.state.inProgress,
         newTodo: '',
-        visibility: 'all'
+        visibility: 'all',
+        showModal: false,
     },
 
     computed: {
@@ -172,7 +155,8 @@ var completedApp = new Vue({
     data: {
         todos: store.state.complete,
         newTodo: '',
-        visibility: 'all'
+        visibility: 'all',
+        showModal: false,
     },
 
     computed: {
@@ -246,6 +230,23 @@ new Vue({
         }
     }
 });
+
+new Vue({
+    el: "#users",
+
+    data: {
+        users: store.state.users
+    },
+    methods: {
+
+        printUsers() {
+            for (var i = 0; i < store.state.users.length; i++)
+            {
+                console.log(store.state.users[i].name);
+            }
+        }
+    }
+});
 /*
 
 ADDING A NEW TASK
@@ -278,12 +279,58 @@ new Vue({
 });
 
 
-
-
-
 Vue.component('modal', {
-    template: '#modal-template'
-})
+    template: '#modal-template',
+    props: ['show','who'],
+    data: function () {
+        return {
+            title: '',
+            about: ''
+        };
+    },
+    methods: {
+        close: function () {
+            this.$emit('close');
+            this.title = '';
+            this.about = '';
+
+        },
+        savePost: function () {
+
+            console.log(this.title);
+            console.log(this.who)
+            if (this.who === "three") {
+                store.state.complete.push({
+                    title: this.title,
+                    about: this.about,
+                    id: store.state.todos.length+store.state.inProgress.length+store.state.complete.length,
+                    seen: false,
+
+                });
+            }
+            if (this.who === "two") {
+                store.state.inProgress.push({
+                    title: this.title,
+                    about: this.about,
+                    id: store.state.todos.length+store.state.inProgress.length+store.state.complete.length,
+                    seen: false,
+
+                });
+            }
+            if (this.who === "one") {
+                store.state.todos.push({
+                    title: this.title,
+                    about: this.about,
+                    id: store.state.todos.length+store.state.inProgress.length+store.state.complete.length,
+                    seen: false,
+                });
+            }
+            console.log(store.state.todos);
+            this.close();
+        }
+    },
+});
+
 // mount
 todoApp.$mount('#todo');
 inProgressApp.$mount('#inprogress');
