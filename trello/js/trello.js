@@ -4,6 +4,9 @@
  * @author Jacob Young
  */
 
+
+
+
 var store = {
     state: {
         todos: [],
@@ -11,6 +14,10 @@ var store = {
         complete: [],
         users: [],
         addNew:false,
+        styles: { 'background-color': '#FFFFFF'}
+
+
+
     }
 
 }
@@ -209,6 +216,7 @@ new Vue({
         form : {
             name: '',
             email: '',
+            showForm: false
         },
     },
     methods: {
@@ -220,7 +228,7 @@ new Vue({
             store.state.users.push(user);
             this.form.name = "";
             this.form.email = "";
-            this.printUsers();
+            this.showForm = false;
         },
         printUsers() {
             for (var i = 0; i < store.state.users.length; i++)
@@ -251,32 +259,6 @@ new Vue({
 
 ADDING A NEW TASK
  */
-new Vue({
-    el: "#newTask",
-
-    data: {
-        task : {
-            name: '',
-            about: '',
-        },
-    },
-    methods: {
-        addTask: function(event) {
-            console.log(this.task.name);
-            var task = {};
-            task.name=this.task.name;
-            task.email=this.task.about;
-            store.state.todos.push(task);
-            $emit('close');
-        },
-        printUsers() {
-            for (var i = 0; i < store.state.users.length; i++)
-            {
-                console.log(store.state.users[i].name);
-            }
-        }
-    }
-});
 
 
 Vue.component('modal', {
@@ -285,8 +267,11 @@ Vue.component('modal', {
     data: function () {
         return {
             title: '',
-            about: ''
-        };
+            about: '',
+            selected: '',
+            users: store.state.users
+
+    };
     },
     methods: {
         close: function () {
@@ -304,6 +289,7 @@ Vue.component('modal', {
                     title: this.title,
                     about: this.about,
                     id: store.state.todos.length+store.state.inProgress.length+store.state.complete.length,
+                    assigned:this.selected  ,
                     seen: false,
 
                 });
@@ -314,7 +300,7 @@ Vue.component('modal', {
                     about: this.about,
                     id: store.state.todos.length+store.state.inProgress.length+store.state.complete.length,
                     seen: false,
-
+                    assigned:this.selected
                 });
             }
             if (this.who === "one") {
@@ -323,6 +309,7 @@ Vue.component('modal', {
                     about: this.about,
                     id: store.state.todos.length+store.state.inProgress.length+store.state.complete.length,
                     seen: false,
+                    assigned:this.selected
                 });
             }
             console.log(store.state.todos);
