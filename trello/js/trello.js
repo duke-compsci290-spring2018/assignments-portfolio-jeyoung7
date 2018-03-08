@@ -316,6 +316,7 @@ Vue.component('modal', {
             this.close();
         }
     },
+
 });
 
 // mount
