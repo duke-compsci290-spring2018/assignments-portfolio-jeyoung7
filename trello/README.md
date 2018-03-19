@@ -19,6 +19,7 @@ https://vuejs.org/v2/examples/modal.html
 https://adamwathan.me/2016/01/04/composing-reusable-modal-dialogs-with-vuejs/
 
 https://jsfiddle.net/jpeter06/ppyeo1tg/
+https://www.w3schools.com/bootstrap/bootstrap_images.asp
 
 Bugs: A lot:
 

@@ -1,9 +1,8 @@
 /** CSS File for Lg Screens **/
 @media screen and (max-width: 2000px) {
     row-t {
-        width: 100%;
-        padding: 25px;
-        margin: 10px;
+        width: 75%;
+        margin: 5px;
 
         background-color: lightslategrey;
 

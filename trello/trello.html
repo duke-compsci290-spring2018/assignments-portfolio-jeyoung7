@@ -21,9 +21,76 @@
 
 <body class="container">
 <div id="app">
+    <div class="modal-mask" @click="close" v-show="signUpModal">
+        <form @click.stop>
+            <button type="button"  @click="close">
+                Close
+            </button>
+            <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                    <input v-model="form.name" class="input" type="text" placeholder="Enter your Name">
+                </div>
+
+            </div>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input v-model="form.email" class="input" type="text" placeholder="Enter your email">
+                </div>
+            </div>
+            <!-- ROBERT DUVALL -->
+
+            <form id="form" @submit.prevent="storeImage">
+                <div>
+                    <label for="imgTitle">Title:</label>
+                    <input type="text" id="imgTitle" v-model="form.downloadURL">
+                    <input type="file" id="files" name="files[]" />
+                </div>
+
+            </form>
+            <!-- ROBERT DUVALL -->
+
+            <button type="button" id="submit" @click="signUp">
+                Sign Up
+            </button>
+
+        </form>
+    </div>
+    <div class="modal-mask" @click="close" v-show="signInModal">
+        <form @click.stop>
+            <button type="button"  @click="close">
+                Close
+            </button>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input v-model="form.email" class="input" type="text" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <input type="password" v-model="form.password" class="input" type="text" placeholder="Enter your Password">
+                </div>
+            </div>
+            <button type="button"  @click="signIn">
+                Sign In
+            </button>
+
+        </form>
+    </div>
+
     <h1>
         Trello
+        {{user.name}}
     </h1>
+    <button type="submit" id="submit" @click="signUpModal=true">
+        Sign Up
+    </button>
+    <button type="submit" id="submit" @click="signInModal=true">
+        Sign In
+    </button>
     <div class="board row row-t">
     <input id="color" type="color" value="#ffffff" @change="changeBackground"/>
     <label> Pick a Color </label>
@@ -53,14 +120,65 @@
 
                                 <label>{{ todo.title }}</label>
                             </div>
-                            <p v-if="todo.seen">{{todo.about}}</p>
 
-                            <!-- clicking this removes the todo item from the data structure -->
+                            <div v-if="todo.seen" class="modal-mask" @click="close">
+                                <div class="modal-containerInfo" @click.stop>
+                                    <div class="modal-header">
+                                        <h2>{{todo.title}}</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3>
+                                            Task
+                                        </h3>
+                                        <label class="form-label">
+                                            {{todo.about}}
+                                        </label>
+                                        <label class="form-label">
+                                            <h3>
+                                                Assignee
+                                            </h3>
+                                            <div v-if="todo.assigned.name">
+                                                {{todo.assigned.name}}
+                                            </div>
+                                            <div v-if="!todo.assigned.name">
+                                                None
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <label class="form-label">
+                                        Images
+                                    </label>
+                                    <div class="container-fluid">
+
+                                    <div class="row row-t">
+                                        <div class="col-lg-3 col-md-4 col-sm-6"  v-for="image in todo.images">
+                                            <div class="thumbnail">
+
+                                                <img v-bind:src="image.url" alt="missing">
+                                                <div class="caption">
+                                                    {{ image.title }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="modal-footer text-right">
+                                        <button class="modal-default-button" @click="closePop(todo)">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            </v-iftransition>
+
                             <button class="destroy" @click="removeTodo(list,key)"></button>
                         </div>
                     </li>
                 </ul>
             </section>
+
             <section class="actions" v-cloak>
            <!-- <span class="todo-count"> -->
                 <!-- this computed value is displayed -->
@@ -98,14 +216,33 @@
                     </label>
 
                     <textarea  v-model="about" rows="5" class="form-control"></textarea>
-                    <select v-model="selected">
+                    <label class="form-label">
+                        Assign to User
+                    </label>
+                    <select v-model="assigned">
                         Assign
-                        <option v-for="user in users" v-bind:value="user.name">
+                        <option v-for="user in users" v-bind:value="user">
                             {{ user.name }}
                         </option>
                     </select>
                 </div>
+                <label class="form-label">
+                    Add Images
+                </label>
+                <div>
+                    <label for="imgTitle">Title:</label>
+                    <input type="text" id="imgTitle" v-model="newImageTitle">
+                    <input type="file" id="entryFile" name="files[]" />
+                    <button class="modal-default-button" @click="addImage">
+                        Add Image
+                    </button>
 
+                </div>
+                <div v-for="image in images" >
+                    <label >
+                        {{ image.title }}
+                    </label>
+                </div>
                 <div class="modal-footer text-right">
                     <button class="modal-default-button" @click="savePost">
                         Save

@@ -9,27 +9,13 @@ var config = {
 
 var db = firebase.initializeApp(config).database();
 var fireLists = db.ref('lists');
+var userList = db.ref('Users');
+var storageRef = firebase.storage().ref(); //storage @DUVALL
 
 Vue.use(VueFire);
 
 
-var users = [
-    {
-        name: 'jacob young',
-        completed: false,
-        about: "hello",
-        id: 1,
-        seen: false,
-    },
-    {
-        name: 'pablo code',
-        completed: false,
-        about: "hello",
-        id: 1,
-        seen: false,
 
-    },
-];
 
 var filters = {
     all: function (todos) {
@@ -47,13 +33,26 @@ var App = new Vue({
         newTodo: '',
         visibility: 'all',
         showModal: false,
-        users: users,
+        user: {
+            uid: '',
+            name: '',
+        },
         currentIndex: 0,
         currentText: '',
+        signUpModal: false,
+        signInModal: false,
+        currentName: '',
+
+        form: {
+            name: '',
+            email: '',
+            imageURL: '',
+        }
 
     },
     firebase: {
         lists: fireLists,
+        users: userList
     },
     computed: {
         // return todos that match the currently selected filter
@@ -81,26 +80,105 @@ var App = new Vue({
 
             this.currentText = '';
         },
-        checkboxToggle(list,key) {
-            if
+        checkboxToggle(list, key) {
+            console.log(this.users);
+
             fireLists.child(list['.key']).child('todos').child(key).remove();
 
         },
-        // remove given todo from the list
         removeTodo(list, key) {
             fireLists.child(list['.key']).child('todos').child(key).remove();
         },
         deleteList(list) {
             fireLists.child(list['.key']).remove();
         },
+        close: function () {
+            this.$emit('close');
+            this.signUpModal = false;
+            this.signInModal = false;
 
+            this.form.name = '';
+            this.form.email = '';
+
+        }, //ROBERT DUVALL TO STORE IMAGES
         mounted() {
             console.log(this.$el);
-        }
+        },
+        closePop(todo) {
+            this.$emit('close');
+
+            todo.seen = false;
+
+        },
+        signUp: function () {
+            var input = document.getElementById('files');
+            var email = this.form.email;
+            var name = this.form.name;
+            // have all fields in the form been completed
+            var fileName = '';
+            if (input.files.length > 0) {
+                var file = input.files[0];
+                // get reference to a storage location and
+                storageRef.child('images/' + file.name)
+                    .put(file)
+                    .then(snapshot =>  db.ref('Users').push({name: name, email: email, imageURL: snapshot.downloadURL}))
+                    .catch(error => console.log(error));
+                // reset input values so user knows to input new data
+                input.value = '';
+            }
+
+
+            this.signUpModal = false;
+            this.close();
+
+
+
+        },
+        signIn: function (event) {
+            var th = this;
+            if (this.form.name.length> 0) {
+                db.ref('Users').orderByChild('name').equalTo(this.form.name).on("value", function (snapshot) {
+                    console.log(snapshot.val());
+                    if (snapshot){
+                        console.log(snapshot.val());
+                        snapshot.forEach(function(data) {
+                            th.user.name = data.val().name;
+                            th.user.uid = data.key;
+                            console.log(data);
+                        });
+                    }
+                    else {
+                        alert("doesn't exist");
+                    }
+                });
+            }
+            else if (this.form.email.length>0) {
+                db.ref('Users').orderByChild('email').equalTo(this.form.email).on("value", function (snapshot) {
+                    if (snapshot){
+                        console.log(snapshot.val());
+                        snapshot.forEach(function(data) {
+                            th.user.name = data.val().name;
+                            th.user.uid = data.key;
+                            console.log(data);
+                        });
+                    } else {
+                        alert("doesn't exist");
+                    }
+                });
+            }
+
+
+            console.log(th.user.name);
+                    th.signUpModal = false;
+                    th.close();
+
+
+
+        },
     }
 
-
 });
+
 Vue.component('modal', {
     template: '#modal-template',
     props: ['show', 'index', 'list'],
@@ -109,28 +187,65 @@ Vue.component('modal', {
             title: '',
             about: '',
             selected: false,
-            users: users
+            assigned: {
+                name: '',
+                email: ''
+            },
+            imgTitle:'',
+            newImageTitle:'',
+            images: [],
         };
+    },
+    firebase: {
+      users: userList
     },
     methods: {
         close: function () {
             this.$emit('close');
             this.title = '';
             this.about = '';
-            this.selected = '';
-
+            this.images = {},
+            this.assigned = {};
+            console.log(this.users);
+        },
+        addImage: function() {
+            var input = document.getElementById('entryFile');
+            var temp = this;
+            // have all fields in the form been completed
+            var fileName = '';
+            if (this.newImageTitle.length > 0  && input.files.length > 0) {
+                var file = input.files[0];
+                // get reference to a storage location and
+                var fileAddress = storageRef.child('images/' + file.name)
+                    .put(file)
+                    .then(snapshot => this.addToList(this.newImageTitle, snapshot.downloadURL))
+                    .catch(error => console.log(error));
+                // reset input values so user knows to input new data
+                input.value = '';
+            }
+        },
+        addToList (title, url) {
+            this.images.push({
+                title: title,
+                url: url
+            });
+            this.newImageTitle = '';
         },
         savePost: function () {
             console.log(this.index);
             console.log(this.list);
 
+
+
+
             fireLists.child(this.list['.key']).child('todos').push({
                 title: this.title,
                 about: this.about,
-                selected: this.selected,
+                assigned: { name: this.assigned.name, email: this.assigned.email },
+                images: this.images,
                 completed: false,
                 seen: false,
-            })
+            });
             this.close();
 
         }
