@@ -6,8 +6,8 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    display: table;
     transition: opacity .3s ease;
+    overflow-y: auto;
 }
 
 .modal-wrapper {
@@ -18,7 +18,9 @@
     margin-bottom: 10px;
 }
 .modal-container {
-    width: 300px;
+    position: absolute;
+
+    width: 40%;
     z-index: 10px;
     margin: 0px auto;
     padding: 20px 30px;
@@ -27,8 +29,10 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
+    overflow-y: auto;
 }
 .modal-containerInfo {
+    position: page;
     width: 60%;
     flex: 1;
     margin: 0px auto;
@@ -38,6 +42,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
+    overflow-y: auto;
 }
 .thumb {
     width: 200px;
@@ -62,7 +67,12 @@ row-t {
     color: #42b983;
 }
 
-
+.documents {
+    background-color: lightgrey;
+    border-radius: 2px;
+    flex: 1;
+    padding: 5px;
+}
 .modal-body {
     margin: 20px 20px;
 }
@@ -70,26 +80,7 @@ row-t {
 .modal-default-button {
     float: right;
 }
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
-    opacity: 0;
+.container {
+    overflow-y: auto;
 }
-
-.modal-leave-active {
-    opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-}
+]

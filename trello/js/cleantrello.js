@@ -10,6 +10,7 @@ var config = {
 var db = firebase.initializeApp(config).database();
 var fireLists = db.ref('lists');
 var userList = db.ref('Users');
+var categoryList = db.ref('categories');
 var storageRef = firebase.storage().ref(); //storage @DUVALL
 
 Vue.use(VueFire);
@@ -28,15 +29,19 @@ var filters = {
         return todos.filter(todo => todo.completed);
     }
 }
+
 var App = new Vue({
     data: {
         newTodo: '',
-        visibility: 'all',
+        filteredList: this.lists,
         showModal: false,
+        showComments: false,
         user: {
             uid: '',
             name: '',
         },
+        newCategory: '',
+        comment: '',
         currentIndex: 0,
         currentText: '',
         signUpModal: false,
@@ -55,7 +60,8 @@ var App = new Vue({
     },
     firebase: {
         lists: fireLists,
-        users: userList
+        users: userList,
+        categories: categoryList
     },
     computed: {
         // return todos that match the currently selected filter
@@ -69,6 +75,45 @@ var App = new Vue({
     methods: {
 
         //class lecture easy way to change backgroundcolor
+        filter: function (category) {
+            var self = this;
+            fireLists.once('value', function(snapshot) {
+                snapshot.forEach(function (snapshot) {
+                    snapshot.child('todos').forEach(function (todoref) {
+                        var todo = todoref.val();
+                        if (todo.category != category.title) {
+                            fireLists.child(snapshot.key).child('todos').child(todoref.key).child('visible').set(false);
+                        }
+                        else {
+                            fireLists.child(snapshot.key).child('todos').child(todoref.key).child('visible').set(true);
+                        }
+
+                    });
+                });
+            });
+
+        },
+        all: function () {
+            var self = this;
+            fireLists.once('value', function(snapshot) {
+                snapshot.forEach(function (snapshot) {
+                    snapshot.child('todos').forEach(function (todoref) {
+                        var todo = todoref.val();
+
+                            fireLists.child(snapshot.key).child('todos').child(todoref.key).child('visible').set(true);
+
+
+                    });
+                });
+            });
+
+        },
+        addCategory() {
+            categoryList.push({title: this.newCategory});
+            console.log(this.newCategory)
+
+            this.newCategory='';
+        },
         changeBackground: function (event) {
             document.body.style.backgroundColor = event.target.value;
         },
@@ -79,7 +124,17 @@ var App = new Vue({
             this.newSubTodo = '';
 
         },
-        removeSubTodo(list,key,task) {
+        addComment: function(list,todo,key) {
+            console.log(firebase.database.ServerValue.TIMESTAMP);
+            fireLists.child(list['.key']).child('todos').child(key).child('comments').push({
+                content: this.comment,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                author: this.user.name,
+            });
+            todo.seen = true;
+
+        },
+        removeSubTodo: function(list,key,task) {
 
 
             fireLists.child(list['.key']).child('todos').child(key).child('tasks').child(task).remove();
@@ -97,6 +152,10 @@ var App = new Vue({
             {
                 todo.tasks = [];
             }
+            if (!todo.comments)
+            {
+                todo.comments = [];
+            }
             fireLists.child(list['.key']).child('todos').child(key).set({
                 title: todo.title,
                 about: todo.about,
@@ -106,6 +165,9 @@ var App = new Vue({
                 tasks: todo.tasks,
                 completed: todo.completed,
                 seen: false,
+                comments: todo.comments,
+                category: todo.category,
+                visible: true
             });
 
             todo.seen = true;
@@ -175,27 +237,40 @@ var App = new Vue({
         removeImageLink: function(list,key,index,todo) {
            db.ref('lists').child(list['.key']).child('todos').child(key).child('images').child(index).remove();
         },
-        listRight: function(index) {
-            var newIndex = 0;
-            db.ref('lists').once("value").then(snapshot=> {
-                var nextList = {};
-                var tempList = snapshot.child(this.list[index]);
-                    if (index <= snapshot.numChildren() - 1) {
-                        rightList = snapshot.child(this.lists[lindex + 1]['.key']);
-                        db.ref('lists').child(list['.key']).set(rightList.val());
-                        db.ref('lists').child(lists[lindex + 1]['.key']).set(tempList.val());
-                    }
+        moveList: function(index,direction) {
 
-            });
+
+            if ((this.lists.length-1 > index && direction === 1) || (index>0 && direction === -1)) {
+
+                var temp = this.lists[index];
+                var tempRight = this.lists[index + direction];
+                if (!tempRight.todos) {
+                    tempRight.todos = '';
+                }
+                if (!temp.todos) {
+                    temp.todos = '';
+                }
+                db.ref('lists').child(temp['.key']).set({
+                    expand: true,
+                    selected: false,
+                    title: tempRight.title,
+                    todos: tempRight.todos,
+                });
+                db.ref('lists').child(tempRight['.key']).set({
+                    expand: true,
+                    selected: false,
+                    title: temp.title,
+                    todos: temp.todos,
+                });
+            }
+
         },
-        listLeft: function(event) {
+        moveTodo: function(todo,key, index,direction) {
+            if ((this.lists.length-1 > index && direction === 1) || (index>0 && direction === -1)) {
 
-        },
-        todoRight: function(event) {
-
-        },
-        todoLeft: function(event) {
-
+                db.ref('lists').child(this.lists[index+direction]['.key']).child('todos').push(todo);
+                db.ref('lists').child(this.lists[index]['.key']).child('todos').child(key).remove();
+            }
         },
         signUp: function () {
             var input = document.getElementById('files');
@@ -278,10 +353,12 @@ Vue.component('modal', {
             imgTitle:'',
             newImageTitle:'',
             images: [],
+            category: '',
         };
     },
     firebase: {
-      users: userList
+      users: userList,
+        categories: categoryList
     },
     methods: {
         close: function () {
@@ -291,7 +368,7 @@ Vue.component('modal', {
             this.images = {},
             this.assigned = {};
             this.deadline= "MM-dd-yyyy";
-            console.log(this.users);
+            this.category='';
         },
         addImage: function() {
             var input = document.getElementById('entryFile');
@@ -320,7 +397,7 @@ Vue.component('modal', {
             console.log(this.index);
             console.log(this.list);
 
-            console.log(this.deadline);
+            console.log(this.category);
 
 
             fireLists.child(this.list['.key']).child('todos').push({
@@ -332,7 +409,11 @@ Vue.component('modal', {
                 tasks: [],
                 completed: false,
                 seen: false,
+                comments: [],
+                visible: true,
+                category: this.category.title,
             });
+
             this.close();
 
         },
