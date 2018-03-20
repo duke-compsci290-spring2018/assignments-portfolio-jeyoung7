@@ -9,7 +9,7 @@ Date Finished:  TBD
 Students Consulted:
 Dina Daas
 
-Hours: 6 hours
+Hours: 25 hours
 
 Resources Used: 
 Vue From Lab from Lab
@@ -21,11 +21,8 @@ https://adamwathan.me/2016/01/04/composing-reusable-modal-dialogs-with-vuejs/
 https://jsfiddle.net/jpeter06/ppyeo1tg/
 https://www.w3schools.com/bootstrap/bootstrap_images.asp
 
-Bugs: A lot:
+Bugs: A few: you can't comment wihtout hte modal closing right after. 
 
 Other Info:
-This is a basic trello. It needs to be hooked up to firebase and add more features. More updates soon. Used to-do list as a base.
-
-
-
+This is an almost finished trello. It neeeds a few more features and to clean up a bit. The code is super messy and I will work on it tomororw.
  
