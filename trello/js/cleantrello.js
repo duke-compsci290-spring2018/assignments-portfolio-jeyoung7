@@ -41,13 +41,16 @@ var App = new Vue({
         currentText: '',
         signUpModal: false,
         signInModal: false,
+        newTitle: '',
         currentName: '',
-
+        newSubTodo:'',
+        edit: false,
         form: {
             name: '',
             email: '',
             imageURL: '',
-        }
+        },
+
 
     },
     firebase: {
@@ -69,6 +72,45 @@ var App = new Vue({
         changeBackground: function (event) {
             document.body.style.backgroundColor = event.target.value;
         },
+        addSubTodo: function (list,key)  {
+            fireLists.child(list['.key']).child('todos').child(key).child('tasks').push({
+                title: this.newSubTodo
+            });
+            this.newSubTodo = '';
+
+        },
+        removeSubTodo(list,key,task) {
+
+
+            fireLists.child(list['.key']).child('todos').child(key).child('tasks').child(task).remove();
+            event.preventDefault()
+        }
+        ,
+        save: function(list,key,todo) {
+            console.log(todo);
+            console.log(key);
+            if (!todo.images)
+            {
+                todo.images = [];
+            }
+            if (!todo.tasks)
+            {
+                todo.tasks = [];
+            }
+            fireLists.child(list['.key']).child('todos').child(key).set({
+                title: todo.title,
+                about: todo.about,
+                deadline: todo.deadline,
+                assigned: {name: todo.assigned.name, email: todo.assigned.email},
+                images: todo.images,
+                tasks: todo.tasks,
+                completed: todo.completed,
+                seen: false,
+            });
+
+            todo.seen = true;
+            this.edit = false;
+        },
         setFilter(filter) {
             this.visibility = filter;
         },
@@ -76,6 +118,8 @@ var App = new Vue({
             newList = [];
             newList.title = this.currentText;
             newList.selected = false;
+            newList.expand = true;
+
             fireLists.push(newList);
 
             this.currentText = '';
@@ -96,7 +140,6 @@ var App = new Vue({
             this.$emit('close');
             this.signUpModal = false;
             this.signInModal = false;
-
             this.form.name = '';
             this.form.email = '';
 
@@ -108,6 +151,50 @@ var App = new Vue({
             this.$emit('close');
 
             todo.seen = false;
+
+        },
+        addToCard: function(list,key) {
+            var input = document.getElementById('newImage');
+            var temp = this;
+            // have all fields in the form been completed
+            var fileName = '';
+            if (this.newTitle.length > 0  && input.files.length > 0) {
+                var file = input.files[0];
+                // get reference to a storage location and
+                var fileAddress = storageRef.child('images/' + file.name)
+                    .put(file)
+                    .then(snapshot =>  db.ref('lists').child(list['.key']).child('todos').child(key).child('images').push({
+                        title: this.newTitle,
+                        url: snapshot.downloadURL,
+                    }).catch(error => console.log(error)));
+
+                // reset input values so user knows to input new data
+                input.value = '';
+            }
+        },
+        removeImageLink: function(list,key,index,todo) {
+           db.ref('lists').child(list['.key']).child('todos').child(key).child('images').child(index).remove();
+        },
+        listRight: function(index) {
+            var newIndex = 0;
+            db.ref('lists').once("value").then(snapshot=> {
+                var nextList = {};
+                var tempList = snapshot.child(this.list[index]);
+                    if (index <= snapshot.numChildren() - 1) {
+                        rightList = snapshot.child(this.lists[lindex + 1]['.key']);
+                        db.ref('lists').child(list['.key']).set(rightList.val());
+                        db.ref('lists').child(lists[lindex + 1]['.key']).set(tempList.val());
+                    }
+
+            });
+        },
+        listLeft: function(event) {
+
+        },
+        todoRight: function(event) {
+
+        },
+        todoLeft: function(event) {
 
         },
         signUp: function () {
@@ -126,12 +213,8 @@ var App = new Vue({
                 // reset input values so user knows to input new data
                 input.value = '';
             }
-
-
             this.signUpModal = false;
             this.close();
-
-
 
         },
         signIn: function (event) {
@@ -186,6 +269,7 @@ Vue.component('modal', {
         return {
             title: '',
             about: '',
+            deadline: "yyyy-MM-dd",
             selected: false,
             assigned: {
                 name: '',
@@ -206,6 +290,7 @@ Vue.component('modal', {
             this.about = '';
             this.images = {},
             this.assigned = {};
+            this.deadline= "MM-dd-yyyy";
             console.log(this.users);
         },
         addImage: function() {
@@ -235,20 +320,23 @@ Vue.component('modal', {
             console.log(this.index);
             console.log(this.list);
 
-
+            console.log(this.deadline);
 
 
             fireLists.child(this.list['.key']).child('todos').push({
                 title: this.title,
                 about: this.about,
+                deadline: this.deadline,
                 assigned: { name: this.assigned.name, email: this.assigned.email },
                 images: this.images,
+                tasks: [],
                 completed: false,
                 seen: false,
             });
             this.close();
 
-        }
+        },
+
     },
 });
 

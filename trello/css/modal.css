@@ -1,6 +1,6 @@
 .modal-mask {
     position: fixed;
-    z-index: 9998;
+    z-index: 9999;
     top: 50px;
     left: 0;
     width: 100%;
@@ -19,6 +19,7 @@
 }
 .modal-container {
     width: 300px;
+    z-index: 10px;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
@@ -28,7 +29,7 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 .modal-containerInfo {
-    width: 70%;
+    width: 60%;
     flex: 1;
     margin: 0px auto;
     padding: 20px 30px;
@@ -37,6 +38,10 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
+}
+.thumb {
+    width: 200px;
+    height: auto;
 }
 row-t {
     width: 80%;

@@ -32,6 +32,13 @@
     padding: 25px;
 
 }
+.listView {
+    width: 100%;
+    margin: 10px;
+    padding: 25px;
+    border: 2px solid darkblue;
+    border-radius: 5px 5px;
+}
 #submit, #showForm {
     border: none;
     font-family: inherit;
