@@ -1,68 +1,81 @@
 .form {
     text-align: center;
-    margin-top: 10%;
+    margin-top: 10%
 }
+
 .sideways {
     flex-direction: row;
-    display: flex;
+    display: flex
 }
-.form  .field {
-    padding: 10px;
-    border: #3A535E 2px;
 
+.form .field {
+    padding: 10px;
+    border: #3A535E 2px
 }
+
 .form .input {
-    padding: 5px;
+    padding: 5px
 }
+
+h7 {
+    margin-left: 5px
+}
+
 #submit, #showForm {
     outline-color: #7A9CAB;
     color: #0e83cd;
-    padding: 25px 80px;
+    padding: 25px 80px
 }
+
 .commentBox {
-    border: 2px solid darkblue;
-    padding: 2px;
+    border: 2px solid #00008b;
+    padding: 2px
 }
+
 .commentBox p {
-    padding: 0px;
-    margin-left: 20px;
+    padding: 0;
+    margin-left: 20px
 }
+
 i {
     padding: 5px;
-    padding-bottom: 10px;
+    padding-bottom: 10px
 }
+
 #submit:hover, #submit:active {
     color: #0e83cd;
-    background: #fff;
+    background: #fff
 }
+
 .board {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 100%
 }
+
 .list {
     width: 25%;
     margin: 25px;
-    padding: 25px;
-
+    padding: 25px
 }
+
 .listView {
     width: 100%;
     margin: 10px;
     padding: 25px;
-    border: 2px solid darkblue;
-    border-radius: 5px 5px;
+    border: 2px solid #00008b;
+    border-radius: 5px 5px
 }
+
 #submit, #showForm {
     border: none;
     font-family: inherit;
     font-size: inherit;
     color: inherit;
-    background: aliceblue;
+    background: #f0f8ff;
     padding: 25px 80px;
     margin: 15px 30px;
     font-weight: 700;
     outline: none;
-    position: relative;
-
+    position: relative
 }
