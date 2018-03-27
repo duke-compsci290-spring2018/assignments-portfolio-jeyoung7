@@ -157,7 +157,6 @@ var App = new Vue({
 
             this.comment = '';
 
-
         },
 //savepost
         save: function (list, key, todo) {
@@ -252,8 +251,6 @@ var App = new Vue({
             console.log(this.$el);
         },
         assign: function(list,key,todo) {
-
-
             if (this.assignSelect ) {
                 fireLists.child(list['.key']).child('todos').child(key).child('assigned').push({ name: this.assignSelect.name,
                     email: this.assignSelect.email,});
@@ -263,9 +260,7 @@ var App = new Vue({
             this.edit = false;
         },
         closePop(todo) {
-
             this.$emit('close');
-
             todo.seen = false;
 
         },
@@ -300,6 +295,12 @@ var App = new Vue({
             }
             todo.seen = true;
 
+        },
+        removeSubTodo: function(list,key,id) {
+            fireLists.child(list['.key']).child('todos').child(key).child('tasks').child(id).remove();
+            this.addToActivity(list.todos[key].title, "TASK removed");
+
+            this.newSubTodo = '';
         },
         moveList: function (index, direction) {
 
