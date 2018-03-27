@@ -189,7 +189,6 @@
                                             <button type="button" v-if="edit" @click="assign(list,key,todo)"
                                                     class="modal-default-button"> Assign
                                             </button>
-
                                         </div>
                                         <h5 v-if="!edit">
                                             Assignee
@@ -198,13 +197,10 @@
                                             <p v-for="assign in todo.assigned">
                                                 {{assign.name}}
                                             </p>
-
-
                                             <p v-if="!todo.assigned">
                                                 None
                                             </p>
                                         </div>
-
                                         <h5>
                                             Deadline
                                         </h5>
@@ -213,7 +209,6 @@
 
                                         <p v-if="!edit">
                                             {{todo.deadline}}
-
                                         </p>
                                         <button @click="save(list,key,todo)" v-if="edit">
                                             Save
@@ -246,8 +241,6 @@
                                                     </li>
                                                 </ul>
                                             </section>
-
-
                                         </div>
                                     </div>
 

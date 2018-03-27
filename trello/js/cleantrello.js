@@ -27,6 +27,7 @@ function getRandomColor() {
     }
     return color;
 }
+
 ////used for getting a random color
 var App = new Vue({
     data: { //central data store
@@ -131,22 +132,22 @@ var App = new Vue({
             fireLists.child(list['.key']).child('todos').child(key).child('tasks').push({
                 title: this.newSubTodo
             });
-            this.addToActivity(this.newSubTodo+this.user.name, "SUBTODO Added");
+            this.addToActivity(this.newSubTodo + this.user.name, "SUBTODO Added");
 
             this.newSubTodo = '';
             console.log(list.todos[key]);
 
         }, //addcomment
 
-        addComment: function (list, todo, key,event) {
+        addComment: function (list, todo, key, event) {
             console.log(firebase.database.ServerValue.TIMESTAMP);
             this.addToActivity(todo.title, "COMMENT ADDED");
             var date = "";
             var dt = new Date();
             if (dt.getMinutes() < 10) {
-                date = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":0" + dt.getMinutes();
-            }  else {
-                date =  (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":" + dt.getMinutes();
+                date = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + dt.getHours() + ":0" + dt.getMinutes();
+            } else {
+                date = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes();
             }
 
             fireLists.child(list['.key']).child('todos').child(key).child('comments').push({
@@ -197,9 +198,9 @@ var App = new Vue({
             var date = "";
             var dt = new Date();
             if (dt.getMinutes() < 10) {
-                date = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":0" + dt.getMinutes();
-            }  else {
-                date =  (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":" + dt.getMinutes();
+                date = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + dt.getHours() + ":0" + dt.getMinutes();
+            } else {
+                date = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes();
             }
             activityList.push({
                 title: title,
@@ -229,7 +230,7 @@ var App = new Vue({
             fireLists.child(list['.key']).child('todos').child(key).remove();
 
         },
-        removeTodo(todo,list, key) {
+        removeTodo(todo, list, key) {
             this.addToActivity(todo.title, "TODO REMOVED");
 
             fireLists.child(list['.key']).child('todos').child(key).remove();
@@ -250,10 +251,12 @@ var App = new Vue({
         mounted() {
             console.log(this.$el);
         },
-        assign: function(list,key,todo) {
-            if (this.assignSelect ) {
-                fireLists.child(list['.key']).child('todos').child(key).child('assigned').push({ name: this.assignSelect.name,
-                    email: this.assignSelect.email,});
+        assign: function (list, key, todo) {
+            if (this.assignSelect) {
+                fireLists.child(list['.key']).child('todos').child(key).child('assigned').push({
+                    name: this.assignSelect.name,
+                    email: this.assignSelect.email,
+                });
                 //this.assignedList.push(this.assigned);
             }
             todo.seen = true;
@@ -265,9 +268,8 @@ var App = new Vue({
 
         },
         addToCard: function (list, key) {
-          //  this.addToActivity(todo.title, "TODO ADDED");
+            //  this.addToActivity(todo.title, "TODO ADDED");
 //adds image to existing card
-
             var input = document.getElementById('newImage');
             var temp = this;
             // have all fields in the form been completed
@@ -280,8 +282,7 @@ var App = new Vue({
                     .then(snapshot => db.ref('lists').child(list['.key']).child('todos').child(key).child('images').push({
                         title: this.newTitle,
                         url: snapshot.downloadURL,
-                    }).then(()=> list.todos[key].seen = true).catch(error => console.log(error)));
-
+                    }).then(() => list.todos[key].seen = true).catch(error => console.log(error)));
                 // reset input values so user knows to input new data
                 input.value = '';
             }
@@ -296,7 +297,7 @@ var App = new Vue({
             todo.seen = true;
 
         },
-        removeSubTodo: function(list,key,id) {
+        removeSubTodo: function (list, key, id) {
             fireLists.child(list['.key']).child('todos').child(key).child('tasks').child(id).remove();
             this.addToActivity(list.todos[key].title, "TASK removed");
 
@@ -334,11 +335,36 @@ var App = new Vue({
 //moves todoelft and right
             if ((this.lists.length - 1 > index && direction === 1) || (index > 0 && direction === -1)) {
 
-                var action = todo.title+' moved from '+this.lists[index].title+' to '+this.lists[index+direction].title;
-                    this.addToActivity(todo.title, action);
+                var action = todo.title + ' moved from ' + this.lists[index].title + ' to ' + this.lists[index + direction].title;
+                this.addToActivity(todo.title, action);
 
                 db.ref('lists').child(this.lists[index + direction]['.key']).child('todos').push(todo);
                 db.ref('lists').child(this.lists[index]['.key']).child('todos').child(key).remove();
+            }
+        },
+        moveTodoVertical: function (list, index, todo, key, direction) {
+            if ((this.lists[index].todos[key].length - 1 > index && direction === 1) || (index > 0 && direction === -1)) {
+
+                var temp = this.lists[index].todos[key];
+                var tempRight = this.lists[index].todos[key + direction];
+                if (!tempRight.todos) {
+                    tempRight.todos = '';
+                }
+                if (!temp.todos) {
+                    temp.todos = '';
+                }
+                db.ref(list['key']).child(temp['.key']).set({
+                    expand: true,
+                    selected: false,
+                    title: tempRight.title,
+                    todos: tempRight.todos,
+                });
+                db.ref(list['key']).child(tempRight['.key']).set({
+                    expand: true,
+                    selected: false,
+                    title: temp.title,
+                    todos: temp.todos,
+                });
             }
         },
         signUp: function () {
@@ -363,35 +389,35 @@ var App = new Vue({
         signIn: function (event) {
             var th = this;
 //note on sign in, all it does is change active user which affects activity log and a little style
-                db.ref('Users').orderByChild('name').equalTo(this.form.name).on("value", function (snapshot) {
-                    if (snapshot) {
-                        snapshot.forEach(function (data) {
-                            th.user.name = data.val().name;
-                            th.user.uid = data.key;
-                            th.user.imageURL = data.val().imageURL;
-                        });
-                    }
-                    else {
-                        alert("doesn't exist");
-                    }
-                });
+            db.ref('Users').orderByChild('name').equalTo(this.form.name).on("value", function (snapshot) {
+                if (snapshot) {
+                    snapshot.forEach(function (data) {
+                        th.user.name = data.val().name;
+                        th.user.uid = data.key;
+                        th.user.imageURL = data.val().imageURL;
+                    });
+                }
+                else {
+                    alert("doesn't exist");
+                }
+            });
 
 
-                db.ref('Users').orderByChild('email').equalTo(this.form.email).on("value", function (snapshot) {
-                    if (snapshot) {
-                        console.log(snapshot.val());
-                        snapshot.forEach(function (data) {
-                            th.user.name = data.val().name;
-                            th.user.uid = data.key;
-                            th.user.imageURL = data.val().imageURL;
+            db.ref('Users').orderByChild('email').equalTo(this.form.email).on("value", function (snapshot) {
+                if (snapshot) {
+                    console.log(snapshot.val());
+                    snapshot.forEach(function (data) {
+                        th.user.name = data.val().name;
+                        th.user.uid = data.key;
+                        th.user.imageURL = data.val().imageURL;
 
-                        });
-                    } else {
-                        alert("doesn't exist");
-                    }
-                });
+                    });
+                } else {
+                    alert("doesn't exist");
+                }
+            });
 
-            if (this.user.name.length=== 0) {
+            if (this.user.name.length === 0) {
                 alert("doesn't exist");
 
             }
@@ -413,8 +439,10 @@ Vue.component('modal', {
             about: '',
             deadline: "yyyy-MM-dd",
             selected: false,
-            assigned : {name: '',
-            email: ''},
+            assigned: {
+                name: '',
+                email: ''
+            },
             assignedList: [],
             imgTitle: '',
             newImageTitle: '',
@@ -437,18 +465,22 @@ Vue.component('modal', {
             this.images = {},
 
 
-                this.assigned = [];
+                this.assigned = {
+                    name: '',
+                    email: ''
+                };
             this.deadline = "MM-dd-yyyy";
-            this.category = {title: '',
-                color: '',};
+            this.category = {
+                title: '',
+                color: '',
+            };
         },
-        assign: function() {
-            if (this.assigned ) {
+        assign: function () {
+            if (this.assigned) {
                 var blocker = true;
-                for (var i = 0; i<this.assignedList.length; i++) {
+                for (var i = 0; i < this.assignedList.length; i++) {
 
-                    if (this.assignedList[i].name === this.assigned.name  || this.assignedList[i].email === this.assigned.email)
-                    {
+                    if (this.assignedList[i].name === this.assigned.name || this.assignedList[i].email === this.assigned.email) {
                         blocker = false;
                         break;
                     }
@@ -460,7 +492,7 @@ Vue.component('modal', {
                     });
                 }
                 else {
-                    alert(this.assigned.name+' is already assigned');
+                    alert(this.assigned.name + ' is already assigned');
 
                 }
             }
@@ -469,7 +501,6 @@ Vue.component('modal', {
             var input = document.getElementById('entryFile');
             var temp = this;
             // have all fields in the form been completed
-            console.log(this.newImageTitle);
             var fileName = '';
             if (this.newImageTitle.length > 0 && input.files.length > 0) {
                 console.log("hello");
@@ -493,11 +524,10 @@ Vue.component('modal', {
         addToActivity: function (title, action) {
             var dt = new Date();
             if (dt.getMinutes() < 10) {
-                date = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":0" + dt.getMinutes();
-            }  else {
-                date =  (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":" + dt.getMinutes();
+                date = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + dt.getHours() + ":0" + dt.getMinutes();
+            } else {
+                date = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes();
             }
-
             activityList.push({
                 title: title,
                 action: action,
@@ -506,9 +536,9 @@ Vue.component('modal', {
             });
         },
         savePost: function () {
-            this.addToActivity(this.title,"CARD ADDED");
-            console.log(this.index);
-            console.log(this.list);
+
+            this.addToActivity(this.title, "CARD ADDED");
+
 
             if (!this.category) {
                 this.category.title = '';
