@@ -61,6 +61,7 @@ var App = new Vue({
         signUpModal: false,
         signInModal: false,
         showActivity: false,
+        assignSelect: '',
         newTitle: '',
         currentName: '',
         newSubTodo: '',
@@ -130,21 +131,32 @@ var App = new Vue({
             fireLists.child(list['.key']).child('todos').child(key).child('tasks').push({
                 title: this.newSubTodo
             });
-            this.addToActivity(this.newSUBTODO+this.user.name, "SUBTODO Added");
+            this.addToActivity(this.newSubTodo+this.user.name, "SUBTODO Added");
 
             this.newSubTodo = '';
+            console.log(list.todos[key]);
 
         }, //addcomment
 
-        addComment: function (list, todo, key) {
+        addComment: function (list, todo, key,event) {
             console.log(firebase.database.ServerValue.TIMESTAMP);
             this.addToActivity(todo.title, "COMMENT ADDED");
+            var date = "";
+            var dt = new Date();
+            if (dt.getMinutes() < 10) {
+                date = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":0" + dt.getMinutes();
+            }  else {
+                date =  (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":" + dt.getMinutes();
+            }
 
             fireLists.child(list['.key']).child('todos').child(key).child('comments').push({
                 content: this.comment,
-                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                createdAt: date,
                 author: this.user.name,
             });
+
+            this.comment = '';
+
 
         },
 //savepost
@@ -160,6 +172,9 @@ var App = new Vue({
             }
             if (!todo.comments) {
                 todo.comments = [];
+            }
+            if (!todo.assigned) {
+                todo.assigned = [];
             }
             fireLists.child(list['.key']).child('todos').child(key).set({
                 title: todo.title,
@@ -180,11 +195,17 @@ var App = new Vue({
         },
         addToActivity: function (title, action) {
 
-
+            var date = "";
+            var dt = new Date();
+            if (dt.getMinutes() < 10) {
+                date = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":0" + dt.getMinutes();
+            }  else {
+                date =  (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":" + dt.getMinutes();
+            }
             activityList.push({
                 title: title,
                 action: action,
-                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                createdAt: date,
                 author: this.user.name,
             });
         }
@@ -230,19 +251,26 @@ var App = new Vue({
         mounted() {
             console.log(this.$el);
         },
-        assign: function() {
-            if (this.assigned ) {
-                this.assignedList.push(this.assigned);
+        assign: function(list,key,todo) {
+
+
+            if (this.assignSelect ) {
+                fireLists.child(list['.key']).child('todos').child(key).child('assigned').push({ name: this.assignSelect.name,
+                    email: this.assignSelect.email,});
+                //this.assignedList.push(this.assigned);
             }
+            todo.seen = true;
+            this.edit = false;
         },
         closePop(todo) {
+
             this.$emit('close');
 
             todo.seen = false;
 
         },
         addToCard: function (list, key) {
-            this.addToActivity(todo.title, "TODO ADDED");
+          //  this.addToActivity(todo.title, "TODO ADDED");
 //adds image to existing card
 
             var input = document.getElementById('newImage');
@@ -257,7 +285,7 @@ var App = new Vue({
                     .then(snapshot => db.ref('lists').child(list['.key']).child('todos').child(key).child('images').push({
                         title: this.newTitle,
                         url: snapshot.downloadURL,
-                    }).catch(error => console.log(error)));
+                    }).then(()=> list.todos[key].seen = true).catch(error => console.log(error)));
 
                 // reset input values so user knows to input new data
                 input.value = '';
@@ -415,9 +443,25 @@ Vue.component('modal', {
         },
         assign: function() {
             if (this.assigned ) {
-                this.assignedList.push({
-                  name: this.assigned.name,
-                email: this.assigned.email,});
+                var blocker = true;
+                for (var i = 0; i<this.assignedList.length; i++) {
+
+                    if (this.assignedList[i].name === this.assigned.name  || this.assignedList[i].email === this.assigned.email)
+                    {
+                        blocker = false;
+                        break;
+                    }
+                }
+                if (blocker) {
+                    this.assignedList.push({
+                        name: this.assigned.name,
+                        email: this.assigned.email,
+                    });
+                }
+                else {
+                    alert(this.assigned.name+' is already assigned');
+
+                }
             }
         },
         addImage: function () {
@@ -446,13 +490,17 @@ Vue.component('modal', {
             this.newImageTitle = '';
         },
         addToActivity: function (title, action) {
-
-            console.log(this.assignedList);
+            var dt = new Date();
+            if (dt.getMinutes() < 10) {
+                date = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":0" + dt.getMinutes();
+            }  else {
+                date =  (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " +dt.getHours() + ":" + dt.getMinutes();
+            }
 
             activityList.push({
                 title: title,
                 action: action,
-                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                createdAt: date,
                 author: this.assigned.name,
             });
         },
