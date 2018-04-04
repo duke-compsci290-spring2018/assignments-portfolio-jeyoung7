@@ -1,0 +1,27 @@
+[
+  {
+    "question": "Who played Kirk Lazarus in Tropic Thunder?",
+    "choices": ["Robert Downey Jr.", "Ben Stiller", "Pablo Escobar", "Enrique Iglesias"],
+    "correctAnswer": 0
+  },
+  {
+    "question": "Which one of these songs is not a Taylor Swift Song?",
+    "choices": ["22", "You Belong With Me", "Our Song", "Ex-24", "New Romantics"],
+    "correctAnswer": 3
+  },
+  {
+    "question": "Who plays the Borat?",
+    "choices": ["Ben Stiller", "Sacha Baron Cohen", "Adam Sandler", "TJ Miller"],
+    "correctAnswer": 1
+  },
+  {
+    "question": "Which song is not produced by DJ Khaled?",
+    "choices": ["All I Do is Win", "I Got the Keys", "For Free", "Slide", "I'm the One"],
+    "correctAnswer": 3
+  },
+  {
+    "question": "Who doesn't feature in Drake's HYFR music video?",
+    "choices": ["DJ Khaled", "Lil Wayne", "Trey Songz", "Birdman", "J. Cole"],
+    "correctAnswer": 4
+  }
+]
