@@ -154,7 +154,7 @@
                                 </div>
                             </div>
                             <div @keyup.enter.prevent v-show="todo.seen" class="modal-mask" @click.stop>
-                                <div class="modal-containerInfo2">
+                                <div class="modal-containerInfo">
                                     <div class="modal-header">
                                         <h2 v-if="!edit">{{todo.title}}</h2>
                                         <input v-if="edit" v-model="todo.title" class="form-control">

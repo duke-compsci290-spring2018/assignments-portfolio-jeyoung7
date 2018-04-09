@@ -29,8 +29,8 @@
     import Pop from '../data/popculture'
 
     export default {
-        name: "quiz-main.vue",
-        data () {
+        name: "quiz_main.vue",
+        data: function () {
             return {
                 questionsA: QuizQuestion,
                 questionsB: Math,
