@@ -1,7 +1,6 @@
 {
   "name": "explore",
   "version": "0.1.0",
-  "homepage": "https://duke-compsci290-spring2018.github.io/assignments-portfolio-jeyoung7/explore/",
   "dependencies": {
     "bootstrap": "^4.0.0",
     "create-react-app": "^1.5.2",
